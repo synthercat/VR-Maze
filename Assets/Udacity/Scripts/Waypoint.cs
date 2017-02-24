@@ -126,11 +126,13 @@ public class Waypoint : MonoBehaviour
 
 	public void Click()
 	{
+
+	//	StopAllCoroutines();
 		_state = _state == State.Focused ? State.Clicked : _state;
 		
 		_audio_source.Play();
-
-		Camera.main.transform.position 	= gameObject.transform.position;
+		StartCoroutine ("MoveToLocation");
+	//	Camera.main.transform.position 	= gameObject.transform.position;
 	}
 
 
@@ -165,5 +167,20 @@ public class Waypoint : MonoBehaviour
 	{
 		_scale					= Mathf.Lerp(_scale, 		0.0f, lerp_hide);
 		_color					= Color.Lerp(_color, Color.clear, lerp_hide);
+	}
+
+	IEnumerator MoveToLocation()
+	{
+		float timePassed = 0f;
+		while (Vector3.Distance(Camera.main.transform.position,gameObject.transform.position) > 0.1f)
+		{
+			if (GvrViewer.Instance.Triggered)
+				yield break;
+			timePassed += Time.deltaTime;
+			Camera.main.transform.position = Vector3.Lerp (Camera.main.transform.position, gameObject.transform.position, timePassed * 0.1f);
+			yield return null;
+		}
+		Camera.main.transform.position 	= gameObject.transform.position;
+		yield break;
 	}
 }

@@ -19,7 +19,7 @@ public class Coin : MonoBehaviour
 
     public void OnCoinClicked()
 	{
-		Instantiate (poofer, transform.position, Quaternion.identity);
+		Instantiate (poofer, transform.position, Quaternion.Euler(-90f, 0f, 0f));
 		totalSpawn--;
 		alreadySubtracted = true;
 		cc.CoinCollected ();
