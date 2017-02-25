@@ -4,20 +4,28 @@ using UnityEngine;
 
 public class Key : MonoBehaviour 
 {
+	public GameObject poofer;
+	public GameObject keyUI; 
+	public Door door;
+	public AudioClip keySound;
     //Create a reference to the KeyPoofPrefab and Door
+
+
 
 	void Update()
 	{
-		//Not required, but for fun why not try adding a Key Floating Animation here :)
+		transform.position = new Vector3(transform.position.x, 1 + (Mathf.Sin(Time.time*5)/3), transform.position.z);
 	}
 
 	public void OnKeyClicked()
 	{
-        // Instatiate the KeyPoof Prefab where this key is located
-        // Make sure the poof animates vertically
-        // Call the Unlock() method on the Door
-        // Set the Key Collected Variable to true
-        // Destroy the key. Check the Unity documentation on how to use Destroy
+		keyUI.SetActive (true);
+		GameObject fx = Instantiate (poofer, transform.position, Quaternion.Euler (-90f, 0f, 0f)) as GameObject;
+		AudioSource audioSource = fx.GetComponent<AudioSource> ();
+		audioSource.clip = keySound;
+		audioSource.Play ();
+		door.hasKey = true; 
+		Destroy (gameObject);
     }
 
 }

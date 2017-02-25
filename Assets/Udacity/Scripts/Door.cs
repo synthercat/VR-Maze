@@ -4,23 +4,44 @@ using UnityEngine;
 
 public class Door : MonoBehaviour 
 {
-    // Create a boolean value called "locked" that can be checked in OnDoorClicked() 
-    // Create a boolean value called "opening" that can be checked in Update() 
+	[HideInInspector]
+	public bool hasKey = false;
+	public GameObject keyUI;
+	public GameObject unlockText;
+	public AudioClip openDoor;
 
-    void Update() {
-        // If the door is opening and it is not fully raised
-            // Animate the door raising up
-    }
+	bool locked = true;
+	AudioSource audioSource;
+	Animator anim;
+	BoxCollider boxer;
 
-    public void OnDoorClicked() {
-        // If the door is clicked and unlocked
-            // Set the "opening" boolean to true
-        // (optionally) Else
-            // Play a sound to indicate the door is locked
-    }
+	void Awake()
+	{
+		audioSource = GetComponent<AudioSource> ();
+		anim        = GetComponent<Animator> ();
+		boxer 		= GetComponent<BoxCollider> ();
+	}
 
-    public void Unlock()
-    {
-        // You'll need to set "locked" to false here
+    public void OnDoorClicked() 
+	{
+
+		if (locked && !hasKey) 
+		{
+			audioSource.Play ();
+		}
+		if (locked && hasKey) 
+		{
+			audioSource.clip = openDoor;
+			audioSource.Play ();
+			keyUI.SetActive (false);
+			unlockText.SetActive (true);
+			locked = false;
+		}
+		if (!locked)                   // MOVE THIS "IF" TO LINE 25 IF YOU WANT TO HAVE TO CLICK ONE TIME TO UNLOCK AND ONE TO OPEN
+		{
+			audioSource.Play ();
+			anim.SetTrigger ("Open");
+			boxer.enabled = false;
+		}
     }
 }

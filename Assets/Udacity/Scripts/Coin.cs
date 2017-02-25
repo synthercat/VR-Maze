@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Coin : MonoBehaviour 
 {
-	public ParticleSystem poofer;//Create a reference to the CoinPoofPrefab
-	public static int totalSpawn = 0;
+	public GameObject poofer;                //Create a reference to the CoinPoofPrefab
+	public static int totalSpawn = 0;        //Static int for easy maintance for remaining keys
 
 	private CoinCounter cc;
 	private bool alreadySubtracted = false;
@@ -19,7 +19,9 @@ public class Coin : MonoBehaviour
 
     public void OnCoinClicked()
 	{
-		Instantiate (poofer, transform.position, Quaternion.Euler(-90f, 0f, 0f));
+		GameObject fx = Instantiate (poofer, transform.position, Quaternion.Euler (-90f, 0f, 0f)) as GameObject;
+		AudioSource audioSource = fx.GetComponent<AudioSource> ();
+		audioSource.Play ();
 		totalSpawn--;
 		alreadySubtracted = true;
 		cc.CoinCollected ();

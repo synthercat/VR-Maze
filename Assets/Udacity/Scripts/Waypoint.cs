@@ -177,7 +177,7 @@ public class Waypoint : MonoBehaviour
 			if (GvrViewer.Instance.Triggered)
 				yield break;
 			timePassed += Time.deltaTime;
-			Camera.main.transform.position = Vector3.Lerp (Camera.main.transform.position, gameObject.transform.position, timePassed * 0.1f);
+			Camera.main.transform.position = Vector3.Lerp (Camera.main.transform.position, gameObject.transform.position, timePassed * 0.5f);
 			yield return null;
 		}
 		Camera.main.transform.position 	= gameObject.transform.position;
